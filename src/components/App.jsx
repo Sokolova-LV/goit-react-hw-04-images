@@ -1,4 +1,3 @@
-/*import { Component } from "react";*/
 import { useState, useEffect } from 'react';
 import * as API from '../utils/Api';
 
@@ -47,13 +46,13 @@ export const App = () => {
         setError(error);
         setStatus('rejected');
       });
-  };
 
   const handleSubmit = query => {
     setSearchName(query);
     setImages([]);
     setCurrentPage(1);
   };
+
   return (
       <div>
       <Searchbar onSubmit={handleSubmit} />
@@ -71,8 +70,9 @@ export const App = () => {
       )}
 
       {images.length > 11 && totalPages !== currentPage && !isLoading && (
-          <Button onClick={addImages} />
+        <Button onClick={setCurrentPage} />
       )}
       </div>
     );
   };
+ 
