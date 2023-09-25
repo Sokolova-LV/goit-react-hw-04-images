@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
     SearchHeader,
@@ -8,22 +8,21 @@ import {
     SearchInput,
 } from './Searchbar.styled';
 
-export default class Searchbar extends Component {
-    state = {
-        searchName: '',
-    };
+export const Searchbar = ({ onSubmit }) => {
+    const [searchName, setSearchName] = useState('');
 
-    handleSubmit = e => {
+    const handleSubmit = e => {
         e.preventDefault();
-        const searchQuery = e.target.elements.searchName.value.trim();
-        this.props.onSubmit(searchQuery);
-        e.target.reset();
+        const searchQuery = searchName.trim();
+
+        onSubmit(searchQuery);
+        setSearchName('');
     };
 
-    render() {
-        return (
+    return (
+        <div>
             <SearchHeader>
-                <SearchForm onSubmit={this.handleSubmit}>
+                <SearchForm onSubmit={handleSubmit}>
                     <SearchInput
                         type="text"
                         autocomplete="off"
@@ -37,10 +36,10 @@ export default class Searchbar extends Component {
                     </SearchButton>
                 </SearchForm>
             </SearchHeader>
-        );
-    }
-}
-
+        </div>
+    );
+};
+    
 Searchbar.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 };
