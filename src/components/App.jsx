@@ -27,9 +27,6 @@ export const App = () => {
     if (!searchName) {
       return;
     }
-    
-    addImages();
-    }, [searchName]);
 
     API
       .getImages(searchName, currentPage)
@@ -44,35 +41,54 @@ export const App = () => {
       })
       .catch(error => {
         setError(error);
-        setStatus('rejected');
+        setStatus('rejected')
       });
+    
+      addImages();
+      }, [searchName, currentPage, images]);
 
-  const handleSubmit = query => {
-    setSearchName(query);
-    setImages([]);
-    setCurrentPage(1);
-  };
+    /*API
+      .getImages(searchName, currentPage)
+      .then(data => {
+        setTotalPages(Math.ceil(data.totalHits / 12));
+        return data.hits;
+      })
+      .then(prevImages => {
+        setImages([...images, ...prevImages]);
+        setCurrentPage(prevCurrentPage => prevCurrentPage + 1);
+        setStatus('resolved');
+      })
+      .catch(error => {
+        setError(error);
+        setStatus('rejected');
+      });*/
 
-  return (
+    const handleSubmit = query => {
+      setSearchName(query);
+      setImages([]);
+      setCurrentPage(1);
+    };
+
+    return (
       <div>
-      <Searchbar onSubmit={handleSubmit} />
+        <Searchbar onSubmit={handleSubmit} />
       
-      {status === 'idle' && (`Please, text the search word`)}
+        {status === 'idle' && (`Please, text the search word`)}
 
-      {status === 'pending' && <Loader />}
+        {status === 'pending' && <Loader />}
 
-      {status === 'rejected' && !images.length && (
-        <p>Image gallery is empty...</p>
-      )}
+        {status === 'rejected' && !images.length && (
+          <p>Image gallery is empty...</p>
+        )}
 
-      {status === 'resolved' && images.length > 0 && (
-        <ImageGallery images={images} />
-      )}
+        {status === 'resolved' && images.length > 0 && (
+          <ImageGallery images={images} />
+        )}
 
-      {images.length > 11 && totalPages !== currentPage && !isLoading && (
-        <Button onClick={setCurrentPage} />
-      )}
+        {images.length > 11 && totalPages !== currentPage && !isLoading && (
+          <Button onClick={setCurrentPage} />
+        )}
       </div>
     );
-  };
+};
  
