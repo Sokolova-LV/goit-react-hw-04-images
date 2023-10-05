@@ -10,7 +10,7 @@ export const Modal = ({ largeImageURL, tags, onClose }) => {
             }
         };
         window.addEventListener('keydown', keydownClick);
-        window.removeEventListener('keydown', keydownClick);
+        return () => window.removeEventListener('keydown', keydownClick);
     }, [onClose]);
 
     const backdropClick = e => {
